@@ -10,6 +10,11 @@ const showOnlyForAccountGetMany = {
 	operation: ['getAll'],
 };
 
+const showOnlyForAccountToggle = {
+	...showOnlyForAccounts,
+	operation: ['activate', 'deactivate'],
+};
+
 export const accountDescription: INodeProperties[] = [
 	{
 		displayName: 'Operation',
@@ -20,6 +25,40 @@ export const accountDescription: INodeProperties[] = [
 			show: showOnlyForAccounts,
 		},
 		options: [
+			{
+				name: 'Activate',
+				value: 'activate',
+				action: 'Activate an account',
+				description:
+					'Switch a connected account on so it can publish. Fails if the plan account limit is already reached.',
+				routing: {
+					request: {
+						method: 'PATCH',
+						url: '=/accounts/{{$parameter.accountId}}',
+						body: {
+							is_active: true,
+						},
+					},
+					output: unwrapDataOutput,
+				},
+			},
+			{
+				name: 'Deactivate',
+				value: 'deactivate',
+				action: 'Deactivate an account',
+				description:
+					'Switch a connected account off. It stays connected and can be switched back on.',
+				routing: {
+					request: {
+						method: 'PATCH',
+						url: '=/accounts/{{$parameter.accountId}}',
+						body: {
+							is_active: false,
+						},
+					},
+					output: unwrapDataOutput,
+				},
+			},
 			{
 				name: 'Get Many',
 				value: 'getAll',
@@ -35,6 +74,21 @@ export const accountDescription: INodeProperties[] = [
 			},
 		],
 		default: 'getAll',
+	},
+
+	// ----------------------------------
+	//   account: activate / deactivate
+	// ----------------------------------
+	{
+		displayName: 'Account ID',
+		name: 'accountId',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: showOnlyForAccountToggle,
+		},
+		description: 'ID of the connected account to switch on or off',
 	},
 	{
 		displayName: 'Return All',
