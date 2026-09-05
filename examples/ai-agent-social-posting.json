@@ -13,7 +13,7 @@
     {
       "parameters": {
         "options": {
-          "systemMessage": "You are a social media assistant. The user tells you what to publish and where.\n\nAlways call \"List Chirpie Accounts\" first to find the account ID for the platform the user named — never guess an account ID.\n\nThen call \"Post with Chirpie\" with that account ID and the post text. Keep the text within the platform's limit (280 characters on X, 300 on Bluesky, 3000 on LinkedIn). Report back the ID and status of the post you created."
+          "systemMessage": "You are a social media assistant. The user tells you what to publish and where.\n\nAlways call \"List Chirpie Accounts\" first to find the account ID for the platform the user named. Never guess an account ID.\n\nThen call \"Post with Chirpie\" with that account ID and the post text. Keep the text within the platform's limit (280 characters on X, 300 on Bluesky, 3000 on LinkedIn). Report back the ID and status of the post you created."
         }
       },
       "id": "1f2e3d4c-5b6a-4798-8a7b-6c5d4e3f2a1b",

@@ -16,7 +16,7 @@
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"incremental": true,
-		// Keep the build-info file out of dist/ — everything in dist/ ships to npm.
+		// Keep the build-info file out of dist/, since everything in dist/ ships to npm.
 		"tsBuildInfoFile": "./.tsbuildinfo",
 		"declaration": true,
 		"sourceMap": true,

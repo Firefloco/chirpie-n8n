@@ -1,6 +1,6 @@
 # @chirpie/n8n-nodes-chirpie
 
-An [n8n](https://n8n.io) community node for [Chirpie](https://chirpie.ai) — one node that posts to X/Twitter, Bluesky, LinkedIn, Threads, Mastodon, Instagram, Facebook, and Telegram, with scheduling, threads, and analytics. More platforms coming soon.
+An [n8n](https://n8n.io) community node for [Chirpie](https://chirpie.ai): one node that posts to X/Twitter, Bluesky, LinkedIn, Threads, Mastodon, Instagram, Facebook, and Telegram, with scheduling, threads, and analytics. More platforms coming soon.
 
 The node is available to n8n AI Agents as a tool, so an agent can list your connected accounts and publish on its own.
 
@@ -26,14 +26,14 @@ Restart n8n. "Chirpie" then appears in the nodes panel.
 
 ### n8n Cloud
 
-n8n Cloud only allows installing community nodes that n8n has verified. This node isn't verified yet — once it is, it will be installable straight from the nodes panel on Cloud, with no npm step. Until then, use a self-hosted instance.
+n8n Cloud only allows installing community nodes that n8n has verified. This node isn't verified yet. Once it is, it will be installable straight from the nodes panel on Cloud, with no npm step. Until then, use a self-hosted instance.
 
 ## Credentials
 
 1. Create an API key at [chirpie.ai/dashboard/keys](https://chirpie.ai/dashboard/keys). Keys start with `chirpie_sk_`.
 2. In n8n, add a new **Chirpie API** credential and paste the key.
 3. Leave **Base URL** at `https://chirpie.ai`.
-4. Select **Test** — the credential calls `GET /api/v1/accounts` and confirms the key works.
+4. Select **Test**. The credential calls `GET /api/v1/accounts` and confirms the key works.
 
 Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chirpie.ai/dashboard/accounts); the node uses whatever is connected there.
 
@@ -63,7 +63,7 @@ Import it with **Workflows → Import from File**, then set your OpenAI and Chir
 
 ## Compatibility
 
-Requires n8n 1.x or later with community nodes enabled, and Node.js 22 or later. The package has no runtime dependencies — it talks to the Chirpie REST API through n8n's built-in HTTP helper.
+Requires n8n 1.x or later with community nodes enabled, and Node.js 22 or later. The package has no runtime dependencies: it talks to the Chirpie REST API through n8n's built-in HTTP helper.
 
 ## Development
 
