@@ -62,6 +62,15 @@ jobs:
             echo "$PKG@$VER is not on npm — publishing."
           fi
 
+      # `npm publish` re-runs the build through prepublishOnly. The tsc build is
+      # incremental, so publishing on top of the build above ships a tarball with
+      # the compiled JS missing: prepublishOnly's build clears dist/ and then
+      # emits nothing, because .tsbuildinfo still claims the output is current.
+      # Removing both makes prepublishOnly's build a real one.
+      - name: Reset build output before publishing
+        if: steps.check.outputs.published == 'false'
+        run: rm -rf dist .tsbuildinfo
+
       - name: Publish
         if: steps.check.outputs.published == 'false'
         run: npm publish --access public --provenance
