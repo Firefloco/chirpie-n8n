@@ -1,0 +1,69 @@
+name: Publish to npm
+
+# Publishes @chirpie/n8n-nodes-chirpie with an npm provenance statement.
+#
+# n8n requires every community node to be published from a GitHub Action with
+# provenance, and npm refuses to attach provenance when the source repository is
+# private. The Chirpie monorepo is private, so this public mirror — not the
+# monorepo — is the publishing origin. package.json's `repository.url` points
+# here for the same reason: provenance verifies the source repo.
+#
+# Version bumps arrive here through the monorepo sync
+# (.github/workflows/sync-n8n-repo.yml in Firefloco/chirpie). A push whose
+# version is already on npm is a no-op, so re-running this is safe.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Build, lint & publish
+    runs-on: ubuntu-latest
+    permissions:
+      # Required for npm provenance.
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      # --ignore-scripts skips native postinstall builds. n8n's tooling pulls in
+      # isolated-vm (through n8n-workflow), which needs a C++ toolchain and
+      # Node 24, and is only used by the local `n8n-node dev` server — never by
+      # build, lint or publish.
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build
+        run: npm run build
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check whether this version is already published
+        id: check
+        run: |
+          set -euo pipefail
+          PKG=$(node -p "require('./package.json').name")
+          VER=$(node -p "require('./package.json').version")
+          echo "package=$PKG" >> "$GITHUB_OUTPUT"
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+          if [ "$(npm view "$PKG@$VER" version --silent || true)" = "$VER" ]; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "$PKG@$VER is already on npm — skipping publish."
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            echo "$PKG@$VER is not on npm — publishing."
+          fi
+
+      - name: Publish
+        if: steps.check.outputs.published == 'false'
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

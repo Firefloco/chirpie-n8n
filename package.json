@@ -1,0 +1,64 @@
+{
+  "name": "@chirpie/n8n-nodes-chirpie",
+  "version": "0.1.1",
+  "description": "n8n community node for Chirpie — post to X, Bluesky, LinkedIn, Threads, Mastodon, Instagram, Facebook, Telegram and more from one node",
+  "license": "MIT",
+  "homepage": "https://chirpie.ai/docs/n8n",
+  "author": {
+    "name": "Fireflo LLC",
+    "email": "support@chirpie.ai"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Firefloco/chirpie-n8n"
+  },
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "chirpie",
+    "social-media",
+    "x",
+    "twitter",
+    "bluesky",
+    "linkedin",
+    "threads",
+    "mastodon",
+    "instagram",
+    "facebook",
+    "telegram",
+    "scheduling"
+  ],
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "prepublishOnly": "n8n-node build && n8n-node lint"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/ChirpieApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Chirpie/Chirpie.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "^0.46.4",
+    "eslint": "^9.39.4",
+    "prettier": "^3.8.3",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}

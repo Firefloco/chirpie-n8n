@@ -1,0 +1,102 @@
+{
+  "name": "AI agent → post to X / LinkedIn / Bluesky with Chirpie",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "6d6c2b6e-7f5c-4a4a-9f0f-1a2b3c4d5e6f",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [-260, 0],
+      "webhookId": "0b5a1f3e-2c4d-4e6f-8a9b-0c1d2e3f4a5b"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a social media assistant. The user tells you what to publish and where.\n\nAlways call \"List Chirpie Accounts\" first to find the account ID for the platform the user named — never guess an account ID.\n\nThen call \"Post with Chirpie\" with that account ID and the post text. Keep the text within the platform's limit (280 characters on X, 300 on Bluesky, 3000 on LinkedIn). Report back the ID and status of the post you created."
+        }
+      },
+      "id": "1f2e3d4c-5b6a-4798-8a7b-6c5d4e3f2a1b",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [-20, 0]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {}
+      },
+      "id": "2a3b4c5d-6e7f-4081-9a2b-3c4d5e6f7a8b",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [-100, 220],
+      "credentials": {
+        "openAiApi": {
+          "id": "REPLACE_WITH_YOUR_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "account",
+        "operation": "getAll",
+        "returnAll": true
+      },
+      "id": "3b4c5d6e-7f80-4192-ab3c-4d5e6f7a8b9c",
+      "name": "List Chirpie Accounts",
+      "type": "@chirpie/n8n-nodes-chirpie.chirpieTool",
+      "typeVersion": 1,
+      "position": [140, 240],
+      "credentials": {
+        "chirpieApi": {
+          "id": "REPLACE_WITH_YOUR_CHIRPIE_CREDENTIAL_ID",
+          "name": "Chirpie account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "post",
+        "operation": "create",
+        "accountId": "={{ $fromAI('accountId', 'The Chirpie account ID to publish through, taken from List Chirpie Accounts', 'string') }}",
+        "text": "={{ $fromAI('text', 'The text of the post to publish', 'string') }}",
+        "options": {}
+      },
+      "id": "4c5d6e7f-8091-42a3-bc4d-5e6f7a8b9c0d",
+      "name": "Post with Chirpie",
+      "type": "@chirpie/n8n-nodes-chirpie.chirpieTool",
+      "typeVersion": 1,
+      "position": [320, 240],
+      "credentials": {
+        "chirpieApi": {
+          "id": "REPLACE_WITH_YOUR_CHIRPIE_CREDENTIAL_ID",
+          "name": "Chirpie account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [[{ "node": "AI Agent", "type": "main", "index": 0 }]]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [[{ "node": "AI Agent", "type": "ai_languageModel", "index": 0 }]]
+    },
+    "List Chirpie Accounts": {
+      "ai_tool": [[{ "node": "AI Agent", "type": "ai_tool", "index": 0 }]]
+    },
+    "Post with Chirpie": {
+      "ai_tool": [[{ "node": "AI Agent", "type": "ai_tool", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
