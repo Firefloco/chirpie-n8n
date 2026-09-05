@@ -68,13 +68,15 @@ Requires n8n 1.x or later with community nodes enabled, and Node.js 22 or later.
 ## Development
 
 ```bash
-pnpm install
-pnpm --filter @chirpie/n8n-nodes-chirpie dev     # boots a local n8n with this node loaded, hot reload
-pnpm --filter @chirpie/n8n-nodes-chirpie build
-pnpm --filter @chirpie/n8n-nodes-chirpie lint
+npm install
+npm run dev      # boots a local n8n with this node loaded, hot reload
+npm run build
+npm run lint
 ```
 
-`dev` starts n8n at <http://localhost:5678> with the node already installed, so you can drag it onto a canvas and run it against a real API key.
+`dev` starts n8n at <http://localhost:5678> with the node already installed, so you can drag it onto a canvas and run it against a real API key. It needs Node.js 22 or later.
+
+Each release is published to npm by GitHub Actions with an [npm provenance](https://docs.npmjs.com/generating-provenance-statements) statement, so every version on npm links back to the commit and workflow run that built it.
 
 ## Resources
 
