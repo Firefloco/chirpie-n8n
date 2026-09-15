@@ -1,6 +1,6 @@
 # @chirpie/n8n-nodes-chirpie
 
-An [n8n](https://n8n.io) community node for [Chirpie](https://chirpie.ai): one node that posts to X/Twitter, Bluesky, LinkedIn, Threads, Mastodon, Instagram, Facebook, and Telegram, with scheduling, threads, and analytics. More platforms coming soon.
+An [n8n](https://n8n.io) community node for [Chirpie](https://chirpie.ai): one node that posts to every account you have connected, with scheduling, threads, and analytics. X/Twitter, Bluesky, LinkedIn, Mastodon and Telegram connect today; Threads, Instagram, Facebook and more are coming soon.
 
 The node is available to n8n AI Agents as a tool, so an agent can list your connected accounts and publish on its own.
 
