@@ -79,11 +79,26 @@ export const postDescription: INodeProperties[] = [
 				name: 'Delete',
 				value: 'delete',
 				action: 'Delete a post',
-				description: 'Delete a post from Chirpie and from the social platform',
+				description:
+					'Take a post down from the social platform. Chirpie keeps the post, marked deleted. Instagram and TikTok offer no delete API and refuse with delete_unsupported.',
 				routing: {
 					request: {
 						method: 'DELETE',
 						url: '=/posts/{{$parameter.postId}}',
+					},
+					output: unwrapDataOutput,
+				},
+			},
+			{
+				name: 'Hide',
+				value: 'hide',
+				action: 'Hide a post',
+				description:
+					'Hide a post from your Chirpie listings. Nothing reaches the social platform and Unhide puts it back.',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/posts/{{$parameter.postId}}/hide',
 					},
 					output: unwrapDataOutput,
 				},
@@ -126,6 +141,20 @@ export const postDescription: INodeProperties[] = [
 						body: {
 							publish: true,
 						},
+					},
+					output: unwrapDataOutput,
+				},
+			},
+			{
+				name: 'Unhide',
+				value: 'unhide',
+				action: 'Unhide a post',
+				description:
+					'Put a hidden post back in your Chirpie listings. Nothing reaches the social platform.',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/posts/{{$parameter.postId}}/unhide',
 					},
 					output: unwrapDataOutput,
 				},
@@ -222,7 +251,7 @@ export const postDescription: INodeProperties[] = [
 	},
 
 	// ----------------------------------
-	//    post: get / update / delete
+	//  post: get / update / delete / hide / unhide
 	// ----------------------------------
 	{
 		displayName: 'Post ID',
@@ -234,7 +263,7 @@ export const postDescription: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				...showOnlyForPosts,
-				operation: ['get', 'update', 'delete', 'publish'],
+				operation: ['get', 'update', 'delete', 'publish', 'hide', 'unhide'],
 			},
 		},
 		description: 'ID of the post, as returned when it was created',
@@ -346,6 +375,20 @@ export const postDescription: INodeProperties[] = [
 					send: {
 						type: 'query',
 						property: 'group_id',
+					},
+				},
+			},
+			{
+				displayName: 'Include Hidden',
+				name: 'includeHidden',
+				type: 'boolean',
+				default: false,
+				description:
+					'Whether to include posts you have hidden. Off by default on every filter.',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'include_hidden',
 					},
 				},
 			},

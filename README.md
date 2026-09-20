@@ -44,11 +44,13 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Media | Upload | Upload an image or video from the item's binary data, and get the ID a post can attach |
 | Post | Create | Publish a post immediately, or schedule it with **Schedule At**, to one account or to several at once |
 | Post | Get | Fetch a single post by ID |
-| Post | Get Many | List posts, filtered by status, account, or group, with pagination |
+| Post | Get Many | List posts, filtered by status, account, or group, with pagination. Turn on **Include Hidden** for the ones you hid |
 | Post | Update | Edit a post that has not published yet, or finish a draft and schedule it |
 | Post | Publish | Send a saved draft now, checking it in full and charging it as a post |
-| Post | Delete | Delete a post from Chirpie and from the social platform |
-| Thread | Create | Publish a 2–25 post thread, immediately or scheduled |
+| Post | Delete | Take a post down from the social platform. Chirpie keeps it, marked deleted. Instagram and TikTok offer no delete API and refuse with `delete_unsupported` |
+| Post | Hide | Hide a post from your Chirpie listings. Nothing reaches the social platform |
+| Post | Unhide | Put a hidden post back in your listings |
+| Thread | Create | Publish a 2–25 post thread, immediately or scheduled. A thread is atomic: if any part fails, the parts already published are deleted and the quota refunded |
 | Account | Get Many | List the social accounts connected to your Chirpie workspace |
 | Analytic | Get | Fetch engagement metrics for a published post |
 
