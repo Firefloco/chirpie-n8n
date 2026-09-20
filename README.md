@@ -41,6 +41,7 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 
 | Resource | Operation | What it does |
 |---|---|---|
+| Media | Upload | Upload an image or video from the item's binary data, and get the ID a post can attach |
 | Post | Create | Publish a post immediately, or schedule it with **Schedule At** |
 | Post | Get | Fetch a single post by ID |
 | Post | Get Many | List posts, filtered by status or account, with pagination |
@@ -49,9 +50,11 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Account | Get Many | List the social accounts connected to your Chirpie workspace |
 | Analytic | Get | Fetch engagement metrics for a published post |
 
-**Post → Create** takes an **Account ID** (from Account → Get Many), the **Text**, and optionally **Media URLs** (a comma-separated list of public image or video URLs) and **Schedule At**.
+**Post → Create** takes an **Account ID** (from Account → Get Many), the **Text**, and optionally **Media IDs** (from Media → Upload), **Media URLs** (a comma-separated list of public image or video URLs) and **Schedule At**. Use Media IDs or Media URLs, not both.
 
-**Thread → Create** takes an **Account ID** and a list of posts, each with its own text and optional media URLs. On X, Bluesky, Threads, Mastodon, and Telegram each post replies to the one before it; on platforms without native threading each is published standalone.
+**Media → Upload** reads the file from the item's binary data, so a file that arrived from an earlier node can be attached without ever having a public URL. The file type is read from the file itself, so a wrong extension does not matter.
+
+**Thread → Create** takes an **Account ID** and a list of posts, each with its own text and optional media, given as Media URLs or as Media IDs from **Media -> Upload**. On X, Bluesky, Threads, Mastodon, and Telegram each post replies to the one before it; on platforms without native threading each is published standalone.
 
 Every operation returns the unwrapped Chirpie response, so `id`, `status`, `platform_post_id`, and the rest are available directly on the output item.
 

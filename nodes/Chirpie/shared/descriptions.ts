@@ -45,6 +45,29 @@ export const accountIdField: INodeProperties = {
 	},
 };
 
+/**
+ * Turns a comma-separated list of upload IDs into the `media_ids` array.
+ */
+export const mediaIdsExpression =
+	'={{ ($value ?? "").split(",").map((id) => id.trim()).filter((id) => id !== "") }}';
+
+export const mediaIdsField: INodeProperties = {
+	displayName: 'Media IDs',
+	name: 'mediaIds',
+	type: 'string',
+	default: '',
+	placeholder: '550e8400-e29b-41d4-a716-446655440000',
+	description:
+		'Comma-separated list of IDs from the Media -> Upload operation. Use this or Media URLs, not both. IDs are valid for 7 days.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'media_ids',
+			value: mediaIdsExpression,
+		},
+	},
+};
+
 export const mediaUrlsField: INodeProperties = {
 	displayName: 'Media URLs',
 	name: 'mediaUrls',

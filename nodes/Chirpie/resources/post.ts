@@ -1,6 +1,7 @@
 import type { INodeProperties } from 'n8n-workflow';
 import {
 	accountIdField,
+	mediaIdsField,
 	mediaUrlsField,
 	scheduleAtField,
 	unwrapDataOutput,
@@ -162,7 +163,7 @@ export const postDescription: INodeProperties[] = [
 		displayOptions: {
 			show: showOnlyForPostCreate,
 		},
-		options: [mediaUrlsField, scheduleAtField],
+		options: [mediaIdsField, mediaUrlsField, scheduleAtField],
 	},
 
 	// ----------------------------------
@@ -179,7 +180,7 @@ export const postDescription: INodeProperties[] = [
 		},
 		// Everything is optional and only what is added is sent. In particular,
 		// leaving Schedule At out keeps the time the post already has.
-		options: [updateTextField, mediaUrlsField, scheduleAtField],
+		options: [mediaIdsField, mediaUrlsField, scheduleAtField, updateTextField],
 	},
 
 	// ----------------------------------

@@ -1,6 +1,7 @@
 import { NodeConnectionTypes, type INodeType, type INodeTypeDescription } from 'n8n-workflow';
 import { accountDescription } from './resources/account';
 import { analyticsDescription } from './resources/analytics';
+import { mediaDescription } from './resources/media';
 import { postDescription } from './resources/post';
 import { threadDescription } from './resources/thread';
 
@@ -51,6 +52,10 @@ export class Chirpie implements INodeType {
 						value: 'analytics',
 					},
 					{
+						name: 'Media',
+						value: 'media',
+					},
+					{
 						name: 'Post',
 						value: 'post',
 					},
@@ -61,6 +66,7 @@ export class Chirpie implements INodeType {
 				],
 				default: 'post',
 			},
+			...mediaDescription,
 			...postDescription,
 			...threadDescription,
 			...accountDescription,
