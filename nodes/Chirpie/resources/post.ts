@@ -15,9 +15,32 @@ const showOnlyForPostCreate = {
 	operation: ['create'],
 };
 
+const showOnlyForPostUpdate = {
+	...showOnlyForPosts,
+	operation: ['update'],
+};
+
 const showOnlyForPostGetMany = {
 	...showOnlyForPosts,
 	operation: ['getAll'],
+};
+
+const updateTextField: INodeProperties = {
+	displayName: 'Text',
+	name: 'text',
+	type: 'string',
+	typeOptions: {
+		rows: 4,
+	},
+	default: '',
+	description:
+		'Replacement content for the post. The maximum length depends on the platform the account belongs to.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'text',
+		},
+	},
 };
 
 export const postDescription: INodeProperties[] = [
@@ -82,6 +105,20 @@ export const postDescription: INodeProperties[] = [
 					output: unwrapDataOutput,
 				},
 			},
+			{
+				name: 'Update',
+				value: 'update',
+				action: 'Update a post',
+				description:
+					'Edit a post that has not published yet, or move it to a new time',
+				routing: {
+					request: {
+						method: 'PATCH',
+						url: '=/posts/{{$parameter.postId}}',
+					},
+					output: unwrapDataOutput,
+				},
+			},
 		],
 		default: 'create',
 	},
@@ -129,7 +166,24 @@ export const postDescription: INodeProperties[] = [
 	},
 
 	// ----------------------------------
-	//        post: get / delete
+	//             post: update
+	// ----------------------------------
+	{
+		displayName: 'Update Fields',
+		name: 'updateFields',
+		type: 'collection',
+		placeholder: 'Add field',
+		default: {},
+		displayOptions: {
+			show: showOnlyForPostUpdate,
+		},
+		// Everything is optional and only what is added is sent. In particular,
+		// leaving Schedule At out keeps the time the post already has.
+		options: [updateTextField, mediaUrlsField, scheduleAtField],
+	},
+
+	// ----------------------------------
+	//    post: get / update / delete
 	// ----------------------------------
 	{
 		displayName: 'Post ID',
@@ -141,7 +195,7 @@ export const postDescription: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				...showOnlyForPosts,
-				operation: ['get', 'delete'],
+				operation: ['get', 'update', 'delete'],
 			},
 		},
 		description: 'ID of the post, as returned when it was created',
