@@ -42,15 +42,17 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Resource | Operation | What it does |
 |---|---|---|
 | Media | Upload | Upload an image or video from the item's binary data, and get the ID a post can attach |
-| Post | Create | Publish a post immediately, or schedule it with **Schedule At** |
+| Post | Create | Publish a post immediately, or schedule it with **Schedule At**, to one account or to several at once |
 | Post | Get | Fetch a single post by ID |
-| Post | Get Many | List posts, filtered by status or account, with pagination |
+| Post | Get Many | List posts, filtered by status, account, or group, with pagination |
 | Post | Delete | Delete a post from Chirpie and from the social platform |
 | Thread | Create | Publish a 2–25 post thread, immediately or scheduled |
 | Account | Get Many | List the social accounts connected to your Chirpie workspace |
 | Analytic | Get | Fetch engagement metrics for a published post |
 
 **Post → Create** takes an **Account ID** (from Account → Get Many), the **Text**, and optionally **Media IDs** (from Media → Upload), **Media URLs** (a comma-separated list of public image or video URLs) and **Schedule At**. Use Media IDs or Media URLs, not both.
+
+To publish the same post to several accounts in one call, leave **Account ID** empty and fill **Account IDs** instead: a comma-separated list of up to 25 account IDs. The output item is then a `group_id` plus one `results` entry per account, in the order they were named, so an account the platform refused is reported there while the others stay published. Pass that `group_id` to **Post → Get Many**'s **Group ID** filter to read the whole group back.
 
 **Media → Upload** reads the file from the item's binary data, so a file that arrived from an earlier node can be attached without ever having a public URL. The file type is read from the file itself, so a wrong extension does not matter.
 

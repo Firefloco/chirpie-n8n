@@ -1,9 +1,10 @@
 import type { INodeProperties } from 'n8n-workflow';
 import {
-	accountIdField,
+	accountIdsField,
 	mediaIdsField,
 	mediaUrlsField,
 	scheduleAtField,
+	singleOrMultiAccountIdField,
 	unwrapDataOutput,
 } from '../shared/descriptions';
 
@@ -128,7 +129,13 @@ export const postDescription: INodeProperties[] = [
 	//             post: create
 	// ----------------------------------
 	{
-		...accountIdField,
+		...singleOrMultiAccountIdField,
+		displayOptions: {
+			show: showOnlyForPostCreate,
+		},
+	},
+	{
+		...accountIdsField,
 		displayOptions: {
 			show: showOnlyForPostCreate,
 		},
@@ -278,6 +285,21 @@ export const postDescription: INodeProperties[] = [
 					send: {
 						type: 'query',
 						property: 'account_id',
+					},
+				},
+			},
+			{
+				displayName: 'Group ID',
+				name: 'groupId',
+				type: 'string',
+				default: '',
+				placeholder: '550e8400-e29b-41d4-a716-446655440000',
+				description:
+					'Return only the posts of one multi-account publish, using the group ID that call returned',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'group_id',
 					},
 				},
 			},
