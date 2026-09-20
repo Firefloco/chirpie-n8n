@@ -1,5 +1,10 @@
 import type { INodeProperties } from 'n8n-workflow';
-import { accountIdField, scheduleAtField, unwrapDataOutput } from '../shared/descriptions';
+import {
+	accountIdField,
+	draftField,
+	scheduleAtField,
+	unwrapDataOutput,
+} from '../shared/descriptions';
 
 const showOnlyForThreads = {
 	resource: ['thread'],
@@ -117,6 +122,6 @@ export const threadDescription: INodeProperties[] = [
 		displayOptions: {
 			show: showOnlyForThreadCreate,
 		},
-		options: [scheduleAtField],
+		options: [draftField, scheduleAtField],
 	},
 ];

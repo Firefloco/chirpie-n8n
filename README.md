@@ -1,6 +1,6 @@
 # @chirpie/n8n-nodes-chirpie
 
-An [n8n](https://n8n.io) community node for [Chirpie](https://chirpie.ai): one node that posts to every account you have connected, with scheduling, threads, and analytics. X/Twitter, Bluesky, LinkedIn, Mastodon and Telegram connect today; Threads, Instagram, Facebook and more are coming soon.
+An [n8n](https://n8n.io) community node for [Chirpie](https://chirpie.ai): one node that posts to every account you have connected, with scheduling, threads, drafts, and analytics. X/Twitter, Bluesky, LinkedIn, Mastodon and Telegram connect today; Threads, Instagram, Facebook and more are coming soon.
 
 The node is available to n8n AI Agents as a tool, so an agent can list your connected accounts and publish on its own.
 
@@ -45,6 +45,8 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Post | Create | Publish a post immediately, or schedule it with **Schedule At**, to one account or to several at once |
 | Post | Get | Fetch a single post by ID |
 | Post | Get Many | List posts, filtered by status, account, or group, with pagination |
+| Post | Update | Edit a post that has not published yet, or finish a draft and schedule it |
+| Post | Publish | Send a saved draft now, checking it in full and charging it as a post |
 | Post | Delete | Delete a post from Chirpie and from the social platform |
 | Thread | Create | Publish a 2–25 post thread, immediately or scheduled |
 | Account | Get Many | List the social accounts connected to your Chirpie workspace |
@@ -53,6 +55,8 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 **Post → Create** takes an **Account ID** (from Account → Get Many), the **Text**, and optionally **Media IDs** (from Media → Upload), **Media URLs** (a comma-separated list of public image or video URLs) and **Schedule At**. Use Media IDs or Media URLs, not both.
 
 To publish the same post to several accounts in one call, leave **Account ID** empty and fill **Account IDs** instead: a comma-separated list of up to 25 account IDs. The output item is then a `group_id` plus one `results` entry per account, in the order they were named, so an account the platform refused is reported there while the others stay published. Pass that `group_id` to **Post → Get Many**'s **Group ID** filter to read the whole group back.
+
+**Options → Draft** on **Post → Create** and **Thread → Create** saves the content without sending it: nothing reaches the platform and nothing counts against your monthly quota. Find what is waiting with **Post → Get Many** and a **Status** of `draft`, then send it with **Post → Publish**, or queue it with **Post → Update** and a **Schedule At**. Switch **Update Fields → Draft** on as well to change only the time a draft remembers. Everything a create checks is checked at that point, so a draft that would be refused stays a draft, untouched.
 
 **Media → Upload** reads the file from the item's binary data, so a file that arrived from an earlier node can be attached without ever having a public URL. The file type is read from the file itself, so a wrong extension does not matter.
 

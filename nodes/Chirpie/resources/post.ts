@@ -1,6 +1,8 @@
 import type { INodeProperties } from 'n8n-workflow';
 import {
 	accountIdsField,
+	draftField,
+	keepDraftField,
 	mediaIdsField,
 	mediaUrlsField,
 	scheduleAtField,
@@ -25,6 +27,11 @@ const showOnlyForPostUpdate = {
 const showOnlyForPostGetMany = {
 	...showOnlyForPosts,
 	operation: ['getAll'],
+};
+
+const showOnlyForPostPublish = {
+	...showOnlyForPosts,
+	operation: ['publish'],
 };
 
 const updateTextField: INodeProperties = {
@@ -108,6 +115,22 @@ export const postDescription: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Publish',
+				value: 'publish',
+				action: 'Publish a draft',
+				description: 'Send a saved draft now, checking it in full and charging it as a post',
+				routing: {
+					request: {
+						method: 'PATCH',
+						url: '=/posts/{{$parameter.postId}}',
+						body: {
+							publish: true,
+						},
+					},
+					output: unwrapDataOutput,
+				},
+			},
+			{
 				name: 'Update',
 				value: 'update',
 				action: 'Update a post',
@@ -170,7 +193,7 @@ export const postDescription: INodeProperties[] = [
 		displayOptions: {
 			show: showOnlyForPostCreate,
 		},
-		options: [mediaIdsField, mediaUrlsField, scheduleAtField],
+		options: [draftField, mediaIdsField, mediaUrlsField, scheduleAtField],
 	},
 
 	// ----------------------------------
@@ -186,8 +209,16 @@ export const postDescription: INodeProperties[] = [
 			show: showOnlyForPostUpdate,
 		},
 		// Everything is optional and only what is added is sent. In particular,
-		// leaving Schedule At out keeps the time the post already has.
-		options: [mediaIdsField, mediaUrlsField, scheduleAtField, updateTextField],
+		// leaving Schedule At out keeps the time a queued post already has. On
+		// a draft, Schedule At queues it unless Keep Draft is turned on: the
+		// flag means the opposite of the one on Create, so it has its own name.
+		options: [
+			keepDraftField,
+			mediaIdsField,
+			mediaUrlsField,
+			scheduleAtField,
+			updateTextField,
+		],
 	},
 
 	// ----------------------------------
@@ -203,10 +234,25 @@ export const postDescription: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				...showOnlyForPosts,
-				operation: ['get', 'update', 'delete'],
+				operation: ['get', 'update', 'delete', 'publish'],
 			},
 		},
 		description: 'ID of the post, as returned when it was created',
+	},
+
+	// ----------------------------------
+	//            post: publish
+	// ----------------------------------
+	{
+		displayName: 'Publish Fields',
+		name: 'publishFields',
+		type: 'collection',
+		placeholder: 'Add field',
+		default: {},
+		displayOptions: {
+			show: showOnlyForPostPublish,
+		},
+		options: [updateTextField],
 	},
 
 	// ----------------------------------

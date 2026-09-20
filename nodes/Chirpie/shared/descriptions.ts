@@ -134,6 +134,40 @@ export const mediaUrlsField: INodeProperties = {
 	},
 };
 
+export const draftField: INodeProperties = {
+	displayName: 'Draft',
+	name: 'draft',
+	type: 'boolean',
+	default: false,
+	description:
+		'Whether to save the content without sending it. Nothing reaches the platform, nothing counts against the monthly quota, and the response lists anything that would stop it publishing.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'draft',
+			// Sent only when it is on: a false flag is the same request as no
+			// flag at all, and leaving it out keeps the body clean.
+			value: '={{ $value ? true : undefined }}',
+		},
+	},
+};
+
+export const keepDraftField: INodeProperties = {
+	displayName: 'Keep Draft',
+	name: 'draft',
+	type: 'boolean',
+	default: false,
+	description:
+		'Whether to leave a draft as a draft. Without it, giving a draft a Schedule At time queues it to publish. Only meaningful on a post that is already a draft.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'draft',
+			value: '={{ $value ? true : undefined }}',
+		},
+	},
+};
+
 export const scheduleAtField: INodeProperties = {
 	displayName: 'Schedule At',
 	name: 'scheduleAt',
