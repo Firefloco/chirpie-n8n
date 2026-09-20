@@ -2,6 +2,7 @@ import type { INodeProperties } from 'n8n-workflow';
 import {
 	accountIdField,
 	draftField,
+	firstCommentField,
 	scheduleAtField,
 	unwrapDataOutput,
 } from '../shared/descriptions';
@@ -122,6 +123,6 @@ export const threadDescription: INodeProperties[] = [
 		displayOptions: {
 			show: showOnlyForThreadCreate,
 		},
-		options: [draftField, scheduleAtField],
+		options: [draftField, firstCommentField, scheduleAtField],
 	},
 ];

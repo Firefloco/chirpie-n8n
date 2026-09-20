@@ -2,6 +2,7 @@ import type { INodeProperties } from 'n8n-workflow';
 import {
 	accountIdsField,
 	draftField,
+	firstCommentField,
 	keepDraftField,
 	mediaIdsField,
 	mediaUrlsField,
@@ -85,6 +86,20 @@ export const postDescription: INodeProperties[] = [
 					request: {
 						method: 'DELETE',
 						url: '=/posts/{{$parameter.postId}}',
+					},
+					output: unwrapDataOutput,
+				},
+			},
+			{
+				name: 'Retry First Comment',
+				value: 'retryFirstComment',
+				action: 'Retry a first comment',
+				description:
+					'Post a first comment that failed, again. It re-sends the text the post already carries, so change that with Update first if it needs changing.',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/posts/{{$parameter.postId}}/first-comment',
 					},
 					output: unwrapDataOutput,
 				},
@@ -222,7 +237,13 @@ export const postDescription: INodeProperties[] = [
 		displayOptions: {
 			show: showOnlyForPostCreate,
 		},
-		options: [draftField, mediaIdsField, mediaUrlsField, scheduleAtField],
+		options: [
+			draftField,
+			firstCommentField,
+			mediaIdsField,
+			mediaUrlsField,
+			scheduleAtField,
+		],
 	},
 
 	// ----------------------------------
@@ -242,6 +263,7 @@ export const postDescription: INodeProperties[] = [
 		// a draft, Schedule At queues it unless Keep Draft is turned on: the
 		// flag means the opposite of the one on Create, so it has its own name.
 		options: [
+			firstCommentField,
 			keepDraftField,
 			mediaIdsField,
 			mediaUrlsField,
@@ -263,7 +285,15 @@ export const postDescription: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				...showOnlyForPosts,
-				operation: ['get', 'update', 'delete', 'publish', 'hide', 'unhide'],
+				operation: [
+					'get',
+					'update',
+					'delete',
+					'publish',
+					'hide',
+					'unhide',
+					'retryFirstComment',
+				],
 			},
 		},
 		description: 'ID of the post, as returned when it was created',

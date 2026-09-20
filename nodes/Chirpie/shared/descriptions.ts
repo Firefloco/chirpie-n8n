@@ -117,6 +117,31 @@ export const mediaIdsField: INodeProperties = {
 	},
 };
 
+/**
+ * The comment published under a post the moment it goes out.
+ *
+ * Four platforms take one (X, Threads, Instagram, Facebook). Anywhere else the
+ * API refuses the request outright rather than dropping the comment, so the
+ * description says which, and there is no silent success to be surprised by.
+ */
+export const firstCommentField: INodeProperties = {
+	displayName: 'First Comment',
+	name: 'firstComment',
+	type: 'string',
+	typeOptions: {
+		rows: 2,
+	},
+	default: '',
+	description:
+		'A comment to publish under the post as soon as it goes out, the link-in-the-first-comment pattern. X, Threads, Instagram and Facebook only: anywhere else the request is refused rather than the comment dropped. It counts as one post against your monthly quota.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'first_comment',
+		},
+	},
+};
+
 export const mediaUrlsField: INodeProperties = {
 	displayName: 'Media URLs',
 	name: 'mediaUrls',
