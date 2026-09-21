@@ -3,7 +3,10 @@ import {
 	accountIdField,
 	draftField,
 	firstCommentField,
+	idempotencyKeyField,
+	sendIdempotencyKey,
 	scheduleAtField,
+	timezoneField,
 	unwrapDataOutput,
 } from '../shared/descriptions';
 
@@ -46,6 +49,9 @@ export const threadDescription: INodeProperties[] = [
 					request: {
 						method: 'POST',
 						url: '/threads',
+					},
+					send: {
+						preSend: [sendIdempotencyKey],
 					},
 					output: unwrapDataOutput,
 				},
@@ -123,6 +129,12 @@ export const threadDescription: INodeProperties[] = [
 		displayOptions: {
 			show: showOnlyForThreadCreate,
 		},
-		options: [draftField, firstCommentField, scheduleAtField],
+		options: [
+			draftField,
+			firstCommentField,
+			idempotencyKeyField,
+			scheduleAtField,
+			timezoneField,
+		],
 	},
 ];

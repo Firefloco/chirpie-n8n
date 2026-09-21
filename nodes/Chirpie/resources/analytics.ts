@@ -46,4 +46,37 @@ export const analyticsDescription: INodeProperties[] = [
 		},
 		description: 'ID of the published post to fetch metrics for',
 	},
+	{
+		displayName: 'Options',
+		name: 'options',
+		type: 'collection',
+		placeholder: 'Add option',
+		default: {},
+		displayOptions: {
+			show: {
+				...showOnlyForAnalytics,
+				operation: ['get'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Refresh',
+				name: 'refresh',
+				type: 'boolean',
+				default: false,
+				description:
+					'Whether to ask the platform for the current numbers instead of reading the stored snapshot. Allowed once per post every 30 minutes; past that the step fails with a Retry-After.',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'refresh',
+						// Only ever sent as the literal the API looks for, and
+						// dropped entirely when the toggle is off, so an
+						// untouched option never spends a platform call.
+						value: '={{ $value ? "true" : undefined }}',
+					},
+				},
+			},
+		],
+	},
 ];

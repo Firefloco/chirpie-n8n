@@ -3,7 +3,11 @@ import type {
 	IHttpRequestOptions,
 	INodeProperties,
 } from 'n8n-workflow';
-import { unwrapDataOutput } from '../shared/descriptions';
+import {
+	idempotencyKeyField,
+	sendIdempotencyKey,
+	unwrapDataOutput,
+} from '../shared/descriptions';
 
 const showOnlyForMedia = {
 	resource: ['media'],
@@ -60,7 +64,7 @@ export const mediaDescription: INodeProperties[] = [
 						url: '/media',
 					},
 					send: {
-						preSend: [sendBinaryFile],
+						preSend: [sendIdempotencyKey, sendBinaryFile],
 					},
 					output: unwrapDataOutput,
 				},
@@ -83,5 +87,19 @@ export const mediaDescription: INodeProperties[] = [
 		},
 		description:
 			'Name of the binary field holding the image or video. The file type is read from the file itself, so a wrong extension does not matter. Uploads are limited to 3 MB; attach a larger file with Media URLs on the post instead.',
+	},
+	{
+		displayName: 'Options',
+		name: 'options',
+		type: 'collection',
+		placeholder: 'Add option',
+		default: {},
+		displayOptions: {
+			show: {
+				...showOnlyForMedia,
+				operation: ['upload'],
+			},
+		},
+		options: [idempotencyKeyField],
 	},
 ];

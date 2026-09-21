@@ -3,11 +3,14 @@ import {
 	accountIdsField,
 	draftField,
 	firstCommentField,
+	idempotencyKeyField,
+	sendIdempotencyKey,
 	keepDraftField,
 	mediaIdsField,
 	mediaUrlsField,
 	scheduleAtField,
 	singleOrMultiAccountIdField,
+	timezoneField,
 	unwrapDataOutput,
 } from '../shared/descriptions';
 
@@ -72,6 +75,9 @@ export const postDescription: INodeProperties[] = [
 					request: {
 						method: 'POST',
 						url: '/posts',
+					},
+					send: {
+						preSend: [sendIdempotencyKey],
 					},
 					output: unwrapDataOutput,
 				},
@@ -240,9 +246,11 @@ export const postDescription: INodeProperties[] = [
 		options: [
 			draftField,
 			firstCommentField,
+			idempotencyKeyField,
 			mediaIdsField,
 			mediaUrlsField,
 			scheduleAtField,
+			timezoneField,
 		],
 	},
 
@@ -268,6 +276,7 @@ export const postDescription: INodeProperties[] = [
 			mediaIdsField,
 			mediaUrlsField,
 			scheduleAtField,
+			timezoneField,
 			updateTextField,
 		],
 	},

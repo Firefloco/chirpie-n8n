@@ -41,8 +41,8 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 
 | Resource | Operation | What it does |
 |---|---|---|
-| Media | Upload | Upload an image or video from the item's binary data, and get the ID a post can attach |
-| Post | Create | Publish a post immediately, or schedule it with **Schedule At**, to one account or to several at once. **Options → First Comment** publishes a comment under the post as soon as it goes out |
+| Media | Upload | Upload an image or video from the item's binary data, and get the ID a post can attach. **Options → Idempotency Key** makes a retried item safe |
+| Post | Create | Publish a post immediately, or schedule it with **Schedule At**, to one account or to several at once. **Options → First Comment** publishes a comment under the post as soon as it goes out, **Options → Timezone** reads a **Schedule At** with no offset in an IANA zone such as `America/New_York`, and **Options → Idempotency Key** stops a retried item publishing twice |
 | Post | Get | Fetch a single post by ID |
 | Post | Get Many | List posts, filtered by status, account, or group, with pagination. Turn on **Include Hidden** for the ones you hid |
 | Post | Update | Edit a post that has not published yet, or finish a draft and schedule it |
@@ -51,11 +51,13 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Post | Delete | Take a post down from the social platform. Chirpie keeps it, marked deleted. Instagram and TikTok offer no delete API and refuse with `delete_unsupported` |
 | Post | Hide | Hide a post from your Chirpie listings. Nothing reaches the social platform |
 | Post | Unhide | Put a hidden post back in your listings |
-| Thread | Create | Publish a 2–25 post thread, immediately or scheduled, with an optional **First Comment** published under its last part. A thread is atomic: if any part fails, the parts already published are deleted and the quota refunded |
+| Thread | Create | Publish a 2–25 post thread, immediately or scheduled, with an optional **First Comment** published under its last part. A thread is atomic: if any part fails, the parts already published are deleted and the quota refunded. **Timezone** and **Idempotency Key** work as they do on a post |
 | Account | Get Many | List the social accounts connected to your Chirpie workspace |
-| Analytic | Get | Fetch engagement metrics for a published post |
+| Analytic | Get | Fetch engagement metrics for a published post. **Options → Refresh** asks the platform now instead of reading the stored snapshot, allowed once per post every 30 minutes |
 
 **Post → Create** takes an **Account ID** (from Account → Get Many), the **Text**, and optionally **Media IDs** (from Media → Upload), **Media URLs** (a comma-separated list of public image or video URLs) and **Schedule At**. Use Media IDs or Media URLs, not both.
+
+**Schedule At** accepts any n8n datetime. A value carrying an offset, which is what the date picker and `$now` both produce, is converted to UTC before sending. A value with no offset is sent exactly as written and read by Chirpie in **Options → Timezone**, or in the timezone saved on the account, with daylight saving worked out for the date you named. Set **Options → Idempotency Key** from something stable across a retry of the same item, such as the execution ID plus the item index, and a retried item replays the first answer for 24 hours rather than publishing again.
 
 To publish the same post to several accounts in one call, leave **Account ID** empty and fill **Account IDs** instead: a comma-separated list of up to 25 account IDs. The output item is then a `group_id` plus one `results` entry per account, in the order they were named, so an account the platform refused is reported there while the others stay published. Pass that `group_id` to **Post → Get Many**'s **Group ID** filter to read the whole group back.
 

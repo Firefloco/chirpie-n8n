@@ -1,4 +1,8 @@
-import type { INodeProperties } from 'n8n-workflow';
+import type {
+	IExecuteSingleFunctions,
+	IHttpRequestOptions,
+	INodeProperties,
+} from 'n8n-workflow';
 
 /**
  * Splits a comma-separated list of URLs typed by the user into the string array
@@ -8,13 +12,26 @@ export const mediaUrlsExpression =
 	'={{ ($value ?? "").split(",").map((url) => url.trim()).filter((url) => url !== "") }}';
 
 /**
- * The Chirpie API only accepts UTC ISO 8601 timestamps (`...Z`). n8n's dateTime
- * parameters carry an explicit offset instead (`2026-04-01T14:00:00+02:00`), and
- * expressions that produce a Luxon DateTime serialise the same way, so normalise
- * to UTC before sending or every scheduled post would come back a 400.
+ * How a Schedule At value reaches the API.
+ *
+ * n8n's own date picker always produces a timestamp carrying an offset, and
+ * that is normalized to UTC here so a workflow's own timezone is handled for
+ * the user. A value with **no** offset is passed through untouched, because
+ * converting it would resolve it in whatever zone the n8n runtime happens to
+ * be in, silently and invisibly: the server resolves it instead, in the
+ * Timezone option or the zone saved on the account, which is the whole point
+ * of sending a wall time rather than an instant. Without this the Timezone
+ * option could never apply to anything.
+ *
+ * Only a value with a time on it and no offset after it is passed through:
+ * the offset test covers `Z`, `+02:00`, `+0200` and the hour-only `+02`, and
+ * requiring the time first is what keeps a date on its own (`2026-04-01`) on
+ * the converting path, where it has always been. Its trailing `-01` would
+ * otherwise read as an hour-only offset, and the API takes no date without a
+ * time.
  */
 export const scheduleAtExpression =
-	'={{ $value ? DateTime.fromISO($value.toString()).toUTC().toISO() : undefined }}';
+	'={{ $value ? (/T\\d/.test($value.toString()) && !/(Z|[+-]\\d{2}(:?\\d{2})?)$/.test($value.toString()) ? $value.toString() : DateTime.fromISO($value.toString()).toUTC().toISO()) : undefined }}';
 
 /** Unwraps the `{ "data": ... }` envelope every Chirpie endpoint returns. */
 export const unwrapDataOutput = {
@@ -192,6 +209,79 @@ export const keepDraftField: INodeProperties = {
 		},
 	},
 };
+
+/**
+ * The IANA timezone a naive `schedule_at` is read in.
+ *
+ * n8n's own date picker always carries an offset, so a picked Schedule At
+ * never needs this. It is for a workflow that builds the timestamp itself, as
+ * an expression producing a local wall time, which is the form that survives a
+ * daylight-saving change: `scheduleAtExpression` passes such a value through
+ * untouched so this zone is what resolves it.
+ */
+export const timezoneField: INodeProperties = {
+	displayName: 'Timezone',
+	name: 'timezone',
+	type: 'string',
+	default: '',
+	placeholder: 'America/New_York',
+	description:
+		'IANA timezone a Schedule At with no offset is read in. Ignored when the time already carries one. Leave it empty to use the timezone saved on the Chirpie account.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'timezone',
+			// Dropped rather than sent as an empty string when the option was
+			// added and then left blank. The API validates the field whether or
+			// not it is used, so `""` would fail the whole step.
+			value: '={{ $value || undefined }}',
+		},
+	},
+};
+
+/**
+ * A caller-chosen key that makes retrying the same request safe.
+ *
+ * It travels as a header, and declarative `routing.send` writes only the body
+ * or the query string, so this field carries no routing of its own: each
+ * operation that offers it attaches the header in a `preSend`, through
+ * `sendIdempotencyKey` below.
+ */
+export const idempotencyKeyField: INodeProperties = {
+	displayName: 'Idempotency Key',
+	name: 'idempotencyKey',
+	type: 'string',
+	default: '',
+	placeholder: 'order-4821-post',
+	description:
+		'A key of your own making that makes retrying this step safe. The same key with the same request replays the first answer for 24 hours instead of sending it again.',
+};
+
+/**
+ * Put the `Idempotency-Key` header on a request, when the option carries one.
+ *
+ * A `preSend` hook rather than an expression on `request.headers`, because an
+ * expression that resolves to nothing is not reliably dropped: a header sent
+ * as an empty string, or as the literal "undefined", is worse than no header
+ * at all now that the API refuses an unusable key with `400
+ * idempotency_key_invalid`. Reading the parameter here makes "absent" really
+ * absent.
+ */
+export async function sendIdempotencyKey(
+	this: IExecuteSingleFunctions,
+	requestOptions: IHttpRequestOptions,
+): Promise<IHttpRequestOptions> {
+	const options = this.getNodeParameter('options', {}) as {
+		idempotencyKey?: string;
+	};
+	const key = options?.idempotencyKey?.trim();
+	if (!key) return requestOptions;
+
+	return {
+		...requestOptions,
+		headers: { ...requestOptions.headers, 'Idempotency-Key': key },
+	};
+}
 
 export const scheduleAtField: INodeProperties = {
 	displayName: 'Schedule At',
