@@ -159,6 +159,171 @@ export const firstCommentField: INodeProperties = {
 	},
 };
 
+/**
+ * Splits a comma-separated list of Instagram usernames into the array the API
+ * expects for `configuration.instagram.collaborators`.
+ */
+export const collaboratorsExpression =
+	'={{ ($value ?? "").split(",").map((name) => name.trim().replace(/^@/, "")).filter((name) => name !== "") }}';
+
+/**
+ * Where an Instagram account publishes this post.
+ *
+ * The options a placement carries are separate fields rather than one JSON
+ * blob, so the editor lists them and an option the placement does not take is
+ * refused by the API with the field named. `user_tags` is the one option with
+ * no field here: it is a list of objects with coordinates, which a collection
+ * cannot hold, so tagging people is done through the API, the SDK or the CLI.
+ *
+ * Only added fields are sent, so a post going nowhere near Instagram carries
+ * no Instagram block: one addressed to a platform the call does not use is
+ * refused rather than ignored.
+ */
+export const instagramPlacementField: INodeProperties = {
+	displayName: 'Instagram Placement',
+	name: 'instagramPlacement',
+	type: 'options',
+	default: 'feed',
+	description:
+		'Where the post goes on Instagram. A story takes exactly one image or video, no caption and no first comment. A reel takes exactly one video and no images. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+	options: [
+		{ name: 'Feed', value: 'feed' },
+		{ name: 'Reel', value: 'reel' },
+		{ name: 'Story', value: 'story' },
+	],
+	routing: {
+		send: {
+			type: 'body',
+			property: 'configuration.instagram.placement',
+		},
+	},
+};
+
+export const instagramCollaboratorsField: INodeProperties = {
+	displayName: 'Instagram Collaborators',
+	name: 'instagramCollaborators',
+	type: 'string',
+	default: '',
+	placeholder: 'first_account, second_account',
+	description:
+		'Comma-separated list of up to three Instagram usernames to invite as co-authors, without the @. The post appears on a collaborator profile once that person accepts, which happens on Instagram. Feed posts and reels only. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'configuration.instagram.collaborators',
+			value: collaboratorsExpression,
+		},
+	},
+};
+
+export const instagramCoverField: INodeProperties = {
+	displayName: 'Instagram Cover Media ID',
+	name: 'instagramCover',
+	type: 'string',
+	default: '',
+	placeholder: '550e8400-e29b-41d4-a716-446655440000',
+	description:
+		'ID from the Media -> Upload operation for the image to use as the cover of a reel. Use this or Instagram Video Cover Timestamp, never both: Instagram reads the image and ignores the timestamp. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'configuration.instagram.cover',
+			value: '={{ $value || undefined }}',
+		},
+	},
+};
+
+export const instagramVideoCoverTimestampField: INodeProperties = {
+	displayName: 'Instagram Video Cover Timestamp',
+	name: 'instagramVideoCoverTimestampMs',
+	type: 'number',
+	default: 0,
+	typeOptions: {
+		minValue: 0,
+	},
+	description:
+		'Milliseconds into the reel to take its cover frame from. Use this or Instagram Cover Media ID, never both. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'configuration.instagram.video_cover_timestamp_ms',
+		},
+	},
+};
+
+export const instagramShareToFeedField: INodeProperties = {
+	displayName: 'Instagram Share to Feed',
+	name: 'instagramShareToFeed',
+	type: 'boolean',
+	default: true,
+	// n8n's linter forbids a final period on a one-sentence boolean
+	// description and requires one as soon as there are several.
+	description:
+		'Whether a reel also appears on the profile grid. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'configuration.instagram.share_to_feed',
+		},
+	},
+};
+
+export const instagramTrialReelField: INodeProperties = {
+	displayName: 'Instagram Trial Reel Graduation',
+	name: 'instagramTrialReelGraduation',
+	type: 'options',
+	default: 'manual',
+	description:
+		'Publish as a trial reel, shown first to people who do not follow the account. Manual waits for you to release it to your followers; performance releases it once Instagram decides it is doing well. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+	options: [
+		{ name: 'Manual', value: 'manual' },
+		{ name: 'Performance', value: 'performance' },
+	],
+	routing: {
+		send: {
+			type: 'body',
+			property: 'configuration.instagram.trial_reel.graduation',
+		},
+	},
+};
+
+/** Where a Facebook Page publishes this post. */
+export const facebookPlacementField: INodeProperties = {
+	displayName: 'Facebook Placement',
+	name: 'facebookPlacement',
+	type: 'options',
+	default: 'feed',
+	description:
+		'Where the post goes on a Facebook Page. A story takes exactly one image or video, no text and no first comment. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+	options: [
+		{ name: 'Feed', value: 'feed' },
+		{ name: 'Story', value: 'story' },
+	],
+	routing: {
+		send: {
+			type: 'body',
+			property: 'configuration.facebook.placement',
+		},
+	},
+};
+
+export const facebookLinkField: INodeProperties = {
+	displayName: 'Facebook Link',
+	name: 'facebookLink',
+	type: 'string',
+	default: '',
+	placeholder: 'https://example.com/blog/scheduling',
+	description:
+		'URL to attach to a Facebook Page feed post, shown as a link preview. Feed posts only. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'configuration.facebook.link',
+			value: '={{ $value || undefined }}',
+		},
+	},
+};
+
 export const mediaUrlsField: INodeProperties = {
 	displayName: 'Media URLs',
 	name: 'mediaUrls',

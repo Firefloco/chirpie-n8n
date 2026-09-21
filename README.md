@@ -42,7 +42,7 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Resource | Operation | What it does |
 |---|---|---|
 | Media | Upload | Upload an image or video from the item's binary data, and get the ID a post can attach. **Options → Idempotency Key** makes a retried item safe |
-| Post | Create | Publish a post immediately, or schedule it with **Schedule At**, to one account or to several at once. **Options → First Comment** publishes a comment under the post as soon as it goes out, **Options → Timezone** reads a **Schedule At** with no offset in an IANA zone such as `America/New_York`, and **Options → Idempotency Key** stops a retried item publishing twice |
+| Post | Create | Publish a post immediately, or schedule it with **Schedule At**, to one account or to several at once. **Options → First Comment** publishes a comment under the post as soon as it goes out, **Options → Instagram Placement** and **Options → Facebook Placement** publish it as a story or a reel instead of a feed post, **Options → Timezone** reads a **Schedule At** with no offset in an IANA zone such as `America/New_York`, and **Options → Idempotency Key** stops a retried item publishing twice |
 | Post | Get | Fetch a single post by ID |
 | Post | Get Many | List posts, filtered by status, account, or group, with pagination. Turn on **Include Hidden** for the ones you hid |
 | Post | Update | Edit a post that has not published yet, or finish a draft and schedule it |
@@ -51,7 +51,7 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Post | Delete | Take a post down from the social platform. Chirpie keeps it, marked deleted. Instagram and TikTok offer no delete API and refuse with `delete_unsupported` |
 | Post | Hide | Hide a post from your Chirpie listings. Nothing reaches the social platform |
 | Post | Unhide | Put a hidden post back in your listings |
-| Thread | Create | Publish a 2–25 post thread, immediately or scheduled, with an optional **First Comment** published under its last part. A thread is atomic: if any part fails, the parts already published are deleted and the quota refunded. **Timezone** and **Idempotency Key** work as they do on a post |
+| Thread | Create | Publish a 2–25 post thread, immediately or scheduled, with an optional **First Comment** published under its last part. A thread is atomic: if any part fails, the parts already published are deleted and the quota refunded. A thread publishes to the feed, so it takes the feed options (**Instagram Collaborators**, **Facebook Link**) and no placement. **Timezone** and **Idempotency Key** work as they do on a post |
 | Account | Get Many | List the social accounts connected to your Chirpie workspace |
 | Analytic | Get | Fetch engagement metrics for a published post. **Options → Refresh** asks the platform now instead of reading the stored snapshot, allowed once per post every 30 minutes |
 

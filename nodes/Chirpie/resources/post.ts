@@ -2,8 +2,16 @@ import type { INodeProperties } from 'n8n-workflow';
 import {
 	accountIdsField,
 	draftField,
+	facebookLinkField,
+	facebookPlacementField,
 	firstCommentField,
 	idempotencyKeyField,
+	instagramCollaboratorsField,
+	instagramCoverField,
+	instagramPlacementField,
+	instagramShareToFeedField,
+	instagramTrialReelField,
+	instagramVideoCoverTimestampField,
 	sendIdempotencyKey,
 	keepDraftField,
 	mediaIdsField,
@@ -245,8 +253,16 @@ export const postDescription: INodeProperties[] = [
 		},
 		options: [
 			draftField,
+			facebookLinkField,
+			facebookPlacementField,
 			firstCommentField,
 			idempotencyKeyField,
+			instagramCollaboratorsField,
+			instagramCoverField,
+			instagramPlacementField,
+			instagramShareToFeedField,
+			instagramTrialReelField,
+			instagramVideoCoverTimestampField,
 			mediaIdsField,
 			mediaUrlsField,
 			scheduleAtField,
@@ -267,11 +283,26 @@ export const postDescription: INodeProperties[] = [
 			show: showOnlyForPostUpdate,
 		},
 		// Everything is optional and only what is added is sent. In particular,
-		// leaving Schedule At out keeps the time a queued post already has. On
-		// a draft, Schedule At queues it unless Keep Draft is turned on: the
-		// flag means the opposite of the one on Create, so it has its own name.
+		// leaving Schedule At out keeps the time a queued post already has, and
+		// leaving every publishing option out keeps the ones it carries. On a
+		// draft, Schedule At queues it unless Keep Draft is turned on: the flag
+		// means the opposite of the one on Create, so it has its own name.
+		//
+		// The publishing options are the one group that does **not** merge.
+		// `configuration` replaces the whole block on an update, which is what
+		// makes "back to a plain feed post" expressible at all, so adding one
+		// option without its placement publishes a queued reel to the feed.
+		// Every option below says so, and so does the Chirpie documentation.
 		options: [
+			facebookLinkField,
+			facebookPlacementField,
 			firstCommentField,
+			instagramCollaboratorsField,
+			instagramCoverField,
+			instagramPlacementField,
+			instagramShareToFeedField,
+			instagramTrialReelField,
+			instagramVideoCoverTimestampField,
 			keepDraftField,
 			mediaIdsField,
 			mediaUrlsField,

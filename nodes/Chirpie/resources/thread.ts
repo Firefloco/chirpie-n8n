@@ -2,8 +2,10 @@ import type { INodeProperties } from 'n8n-workflow';
 import {
 	accountIdField,
 	draftField,
+	facebookLinkField,
 	firstCommentField,
 	idempotencyKeyField,
+	instagramCollaboratorsField,
 	sendIdempotencyKey,
 	scheduleAtField,
 	timezoneField,
@@ -129,10 +131,16 @@ export const threadDescription: INodeProperties[] = [
 		displayOptions: {
 			show: showOnlyForThreadCreate,
 		},
+		// A thread publishes to the feed, so it carries the options a feed post
+		// carries and no placement field: an Instagram story or reel, and a
+		// Facebook Page story, are each a single post, and a thread asking for
+		// one of those placements is refused.
 		options: [
 			draftField,
+			facebookLinkField,
 			firstCommentField,
 			idempotencyKeyField,
+			instagramCollaboratorsField,
 			scheduleAtField,
 			timezoneField,
 		],
