@@ -95,7 +95,7 @@ export const postDescription: INodeProperties[] = [
 				value: 'delete',
 				action: 'Delete a post',
 				description:
-					'Take a post down from the social platform. Chirpie keeps the post, marked deleted. Instagram and TikTok offer no delete API and refuse with delete_unsupported.',
+					'Take a post down from the social platform. Chirpie keeps the post, marked deleted. A published Instagram or TikTok post cannot be deleted and refuses with delete_unsupported.',
 				routing: {
 					request: {
 						method: 'DELETE',

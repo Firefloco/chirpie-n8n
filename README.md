@@ -48,7 +48,7 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Post | Update | Edit a post that has not published yet, or finish a draft and schedule it |
 | Post | Publish | Send a saved draft now, checking it in full and charging it as a post |
 | Post | Retry First Comment | Post a first comment that failed, again. It re-sends the text the post already carries |
-| Post | Delete | Take a post down from the social platform. Chirpie keeps it, marked deleted. Instagram and TikTok offer no delete API and refuse with `delete_unsupported` |
+| Post | Delete | Take a post down from the social platform. Chirpie keeps it, marked deleted. A published Instagram or TikTok post cannot be deleted and refuses with `delete_unsupported` |
 | Post | Hide | Hide a post from your Chirpie listings. Nothing reaches the social platform |
 | Post | Unhide | Put a hidden post back in your listings |
 | Thread | Create | Publish a 2–25 post thread, immediately or scheduled, with an optional **First Comment** published under its last part. A thread is atomic: if any part fails, the parts already published are deleted and the quota refunded. A thread publishes to the feed, so it takes the feed options (**Instagram Collaborators**, **Facebook Link**) and no placement. **Timezone** and **Idempotency Key** work as they do on a post |
