@@ -65,7 +65,7 @@ export const analyticsDescription: INodeProperties[] = [
 				type: 'boolean',
 				default: false,
 				description:
-					'Whether to ask the platform for the current numbers instead of reading the stored snapshot. Allowed once per post every 30 minutes; past that the step fails with a Retry-After.',
+					'Whether to ask the platform for the current numbers instead of reading the stored snapshot. Allowed once per post every 5 minutes; past that the step fails with a Retry-After.',
 				routing: {
 					send: {
 						type: 'query',

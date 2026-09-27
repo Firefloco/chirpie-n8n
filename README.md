@@ -53,7 +53,7 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Post | Unhide | Put a hidden post back in your listings |
 | Thread | Create | Publish a 2–25 post thread, immediately or scheduled, with an optional **First Comment** published under its last part. A thread is atomic: if any part fails, the parts already published are deleted and the quota refunded. A thread publishes to the feed, so it takes the feed options (**Instagram Collaborators**, **Facebook Link**) and no placement. **Timezone** and **Idempotency Key** work as they do on a post |
 | Account | Get Many | List the social accounts connected to your Chirpie workspace |
-| Analytic | Get | Fetch engagement metrics for a published post. **Options → Refresh** asks the platform now instead of reading the stored snapshot, allowed once per post every 30 minutes |
+| Analytic | Get | Fetch engagement metrics for a published post. **Options → Refresh** asks the platform now instead of reading the stored snapshot, allowed once per post every 5 minutes |
 
 **Post → Create** takes an **Account ID** (from Account → Get Many), the **Text**, and optionally **Media IDs** (from Media → Upload), **Media URLs** (a comma-separated list of public image or video URLs) and **Schedule At**. Use Media IDs or Media URLs, not both.
 
