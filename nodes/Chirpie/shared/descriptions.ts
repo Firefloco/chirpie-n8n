@@ -150,7 +150,7 @@ export const firstCommentField: INodeProperties = {
 	},
 	default: '',
 	description:
-		'A comment to publish under the post as soon as it goes out, the link-in-the-first-comment pattern. X, Threads, Instagram and Facebook only: anywhere else the request is refused rather than the comment dropped. It counts as one post against your monthly quota.',
+		'A comment to publish under the post as soon as it goes out, the link-in-the-first-comment pattern. X only today (Threads, Instagram and Facebook coming soon): anywhere else the request is refused rather than the comment dropped. It counts as one post against your monthly quota.',
 	routing: {
 		send: {
 			type: 'body',
