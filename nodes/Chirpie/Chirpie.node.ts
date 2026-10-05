@@ -16,7 +16,7 @@ export class Chirpie implements INodeType {
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description:
-			'Post to X, Bluesky, LinkedIn, Threads, Mastodon, Instagram, Facebook, Telegram and more through the Chirpie API',
+			'Post to X, Bluesky, LinkedIn, Mastodon and Telegram through the Chirpie API, with Threads, Instagram and Facebook coming soon',
 		defaults: {
 			name: 'Chirpie',
 		},
