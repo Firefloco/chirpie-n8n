@@ -1,6 +1,6 @@
 # @chirpie/n8n-nodes-chirpie
 
-An [n8n](https://n8n.io) community node for [Chirpie](https://chirpie.ai): one node that posts to every account you have connected, with scheduling, threads, drafts, and analytics. X/Twitter, Bluesky, LinkedIn, Threads, Mastodon, Instagram, Facebook and Telegram connect today, and more are coming soon.
+An [n8n](https://n8n.io) community node for [Chirpie](https://chirpie.ai?utm_source=npm&utm_medium=readme&utm_campaign=n8n): one node that posts to every account you have connected, with scheduling, threads, drafts, and analytics. X/Twitter, Bluesky, LinkedIn, Threads, Mastodon, Instagram, Facebook and Telegram connect today, and more are coming soon.
 
 The node is available to n8n AI Agents as a tool, so an agent can list your connected accounts and publish on its own.
 
@@ -30,12 +30,12 @@ n8n Cloud only allows installing community nodes that n8n has verified. This nod
 
 ## Credentials
 
-1. Create an API key at [chirpie.ai/dashboard/keys](https://chirpie.ai/dashboard/keys). Keys start with `chirpie_sk_`.
+1. Create an API key at [chirpie.ai/dashboard/keys](https://chirpie.ai/dashboard/keys?utm_source=npm&utm_medium=readme&utm_campaign=n8n). Keys start with `chirpie_sk_`.
 2. In n8n, add a new **Chirpie API** credential and paste the key.
 3. Leave **Base URL** at `https://chirpie.ai`.
 4. Select **Test**. The credential calls `GET /api/v1/accounts` and confirms the key works.
 
-Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chirpie.ai/dashboard/accounts); the node uses whatever is connected there.
+Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chirpie.ai/dashboard/accounts?utm_source=npm&utm_medium=readme&utm_campaign=n8n); the node uses whatever is connected there.
 
 ## Operations
 
@@ -94,8 +94,8 @@ Each release is published to npm by GitHub Actions with an [npm provenance](http
 
 ## Resources
 
-- [Chirpie n8n documentation](https://chirpie.ai/docs/n8n)
-- [Chirpie API reference](https://chirpie.ai/docs/api/posts)
+- [Chirpie n8n documentation](https://chirpie.ai/docs/n8n?utm_source=npm&utm_medium=readme&utm_campaign=n8n)
+- [Chirpie API reference](https://chirpie.ai/docs/api/posts?utm_source=npm&utm_medium=readme&utm_campaign=n8n)
 - [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
 
 ## License
