@@ -540,6 +540,7 @@ export const postDescription: INodeProperties[] = [
 					{ name: 'Deleted', value: 'deleted' },
 					{ name: 'Draft', value: 'draft' },
 					{ name: 'Failed', value: 'failed' },
+					{ name: 'Processing', value: 'processing' },
 					{ name: 'Published', value: 'published' },
 					{ name: 'Publishing', value: 'publishing' },
 					{ name: 'Scheduled', value: 'scheduled' },
