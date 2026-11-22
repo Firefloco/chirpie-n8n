@@ -185,7 +185,7 @@ export const instagramPlacementField: INodeProperties = {
 	type: 'options',
 	default: 'feed',
 	description:
-		'Where the post goes on Instagram. A story takes exactly one image or video, no caption and no first comment. A reel takes exactly one video and no images. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+		'Where the post goes on Instagram. A feed post takes up to 10 images and videos, and one video on its own is published as a reel. A story takes exactly one image or video, no caption and no first comment. A reel takes exactly one video and no images. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
 	options: [
 		{ name: 'Feed', value: 'feed' },
 		{ name: 'Reel', value: 'reel' },
@@ -314,7 +314,7 @@ export const facebookLinkField: INodeProperties = {
 	default: '',
 	placeholder: 'https://example.com/blog/scheduling',
 	description:
-		'URL to attach to a Facebook Page feed post, shown as a link preview. Feed posts only. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
+		'URL to attach to a Facebook Page feed post, shown as a link preview. Feed posts only, and not a video post, which takes no link. On Post Update the publishing options replace the whole block, so send the placement alongside this or a queued story or reel publishes to the feed.',
 	routing: {
 		send: {
 			type: 'body',
