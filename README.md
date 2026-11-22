@@ -61,7 +61,7 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 
 To publish the same post to several accounts in one call, leave **Account ID** empty and fill **Account IDs** instead: a comma-separated list of up to 25 account IDs. The output item is then a `group_id` plus one `results` entry per account, in the order they were named, so an account the platform refused is reported there while the others stay published. Pass that `group_id` to **Post → Get Many**'s **Group ID** filter to read the whole group back.
 
-**Options → Allow Duplicate** (also on **Thread → Create**, **Post → Update** and **Post → Publish**) publishes even when the account already has a post with the same text within 24 hours. Without it such an item is refused with `409 duplicate_post`, which names the post already there, and nothing is sent.
+**Options → Allow Duplicate** (also on **Thread → Create**, **Post → Update** and **Post → Publish**) publishes even when the account already has a post with the same text within 12 hours. Without it such an item is refused with `409 duplicate_post`, which names the post already there, and nothing is sent.
 
 **Options → Draft** on **Post → Create** and **Thread → Create** saves the content without sending it: nothing reaches the platform and nothing counts against your monthly quota. Find what is waiting with **Post → Get Many** and a **Status** of `draft`, then send it with **Post → Publish**, or queue it with **Post → Update** and a **Schedule At**. Switch **Update Fields → Draft** on as well to change only the time a draft remembers. Everything a create checks is checked at that point, so a draft that would be refused stays a draft, untouched.
 

@@ -347,7 +347,7 @@ export const allowDuplicateField: INodeProperties = {
 	type: 'boolean',
 	default: false,
 	description:
-		'Whether to publish even when an account already has a post with the same text within 24 hours. Without it such a request is refused with duplicate_post, which names the post already there, and nothing is sent.',
+		'Whether to publish even when an account already has a post with the same text within 12 hours. Without it such a request is refused with duplicate_post, which names the post already there, and nothing is sent.',
 	routing: {
 		send: {
 			type: 'body',
