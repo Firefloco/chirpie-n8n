@@ -1,6 +1,7 @@
 import type { INodeProperties } from 'n8n-workflow';
 import {
 	accountIdField,
+	allowDuplicateField,
 	draftField,
 	facebookLinkField,
 	firstCommentField,
@@ -136,6 +137,7 @@ export const threadDescription: INodeProperties[] = [
 		// Facebook Page story, are each a single post, and a thread asking for
 		// one of those placements is refused.
 		options: [
+			allowDuplicateField,
 			draftField,
 			facebookLinkField,
 			firstCommentField,

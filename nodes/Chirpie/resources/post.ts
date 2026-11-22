@@ -1,6 +1,7 @@
 import type { INodeProperties } from 'n8n-workflow';
 import {
 	accountIdsField,
+	allowDuplicateField,
 	draftField,
 	facebookLinkField,
 	facebookPlacementField,
@@ -14,6 +15,8 @@ import {
 	instagramVideoCoverTimestampField,
 	sendIdempotencyKey,
 	keepDraftField,
+	listFromField,
+	listToField,
 	mediaIdsField,
 	mediaUrlsField,
 	scheduleAtField,
@@ -149,7 +152,8 @@ export const postDescription: INodeProperties[] = [
 				name: 'Get Many',
 				value: 'getAll',
 				action: 'Get many posts',
-				description: 'Retrieve many posts, optionally filtered by status or account',
+				description:
+					'Retrieve many posts, filtered by status, account, network, time or text',
 				routing: {
 					request: {
 						method: 'GET',
@@ -252,6 +256,7 @@ export const postDescription: INodeProperties[] = [
 			show: showOnlyForPostCreate,
 		},
 		options: [
+			allowDuplicateField,
 			draftField,
 			facebookLinkField,
 			facebookPlacementField,
@@ -294,6 +299,7 @@ export const postDescription: INodeProperties[] = [
 		// option without its placement publishes a queued reel to the feed.
 		// Every option below says so, and so does the Chirpie documentation.
 		options: [
+			allowDuplicateField,
 			facebookLinkField,
 			facebookPlacementField,
 			firstCommentField,
@@ -351,7 +357,7 @@ export const postDescription: INodeProperties[] = [
 		displayOptions: {
 			show: showOnlyForPostPublish,
 		},
-		options: [updateTextField],
+		options: [allowDuplicateField, updateTextField],
 	},
 
 	// ----------------------------------
@@ -433,6 +439,7 @@ export const postDescription: INodeProperties[] = [
 					},
 				},
 			},
+			listFromField,
 			{
 				displayName: 'Group ID',
 				name: 'groupId',
@@ -463,6 +470,67 @@ export const postDescription: INodeProperties[] = [
 				},
 			},
 			{
+				displayName: 'Platform',
+				name: 'platform',
+				type: 'options',
+				default: 'x',
+				description: 'Return only posts on this network',
+				options: [
+					{ name: 'Bluesky', value: 'bluesky' },
+					{ name: 'Facebook', value: 'facebook' },
+					{ name: 'Instagram', value: 'instagram' },
+					{ name: 'LinkedIn', value: 'linkedin' },
+					{ name: 'Mastodon', value: 'mastodon' },
+					{ name: 'Telegram', value: 'telegram' },
+					{ name: 'Threads', value: 'threads' },
+					{ name: 'X', value: 'x' },
+				],
+				routing: {
+					send: {
+						type: 'query',
+						property: 'platform',
+					},
+				},
+			},
+			{
+				displayName: 'Search Text',
+				name: 'q',
+				type: 'string',
+				default: '',
+				description: 'Return only posts whose text contains these words, ignoring case',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'q',
+					},
+				},
+			},
+			{
+				displayName: 'Sort By',
+				name: 'sort',
+				type: 'options',
+				default: 'created_at',
+				description: 'Which time the newest-first order follows',
+				options: [
+					{
+						name: 'Created',
+						value: 'created_at',
+						description: 'When the post was created in Chirpie',
+					},
+					{
+						name: 'Post Time',
+						value: 'time',
+						description: 'When the post is scheduled for, or was published',
+					},
+				],
+				routing: {
+					send: {
+						type: 'query',
+						property: 'sort',
+					},
+				},
+			},
+			{
 				displayName: 'Status',
 				name: 'status',
 				type: 'options',
@@ -483,6 +551,7 @@ export const postDescription: INodeProperties[] = [
 					},
 				},
 			},
+			listToField,
 		],
 	},
 ];

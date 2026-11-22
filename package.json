@@ -1,6 +1,6 @@
 {
   "name": "@chirpie/n8n-nodes-chirpie",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "n8n community node for Chirpie: post to X, Bluesky, LinkedIn, Threads, Mastodon, Instagram, Facebook and Telegram from one node",
   "license": "MIT",
   "homepage": "https://chirpie.ai/docs/n8n",

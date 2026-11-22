@@ -341,6 +341,57 @@ export const mediaUrlsField: INodeProperties = {
 	},
 };
 
+export const allowDuplicateField: INodeProperties = {
+	displayName: 'Allow Duplicate',
+	name: 'allowDuplicate',
+	type: 'boolean',
+	default: false,
+	description:
+		'Whether to publish even when an account already has a post with the same text within 24 hours. Without it such a request is refused with duplicate_post, which names the post already there, and nothing is sent.',
+	routing: {
+		send: {
+			type: 'body',
+			property: 'allow_duplicate',
+			value: '={{ $value ? true : undefined }}',
+		},
+	},
+};
+
+/** An instant for a listing filter, always sent as UTC. */
+const instantExpression =
+	'={{ $value ? DateTime.fromISO($value.toString()).toUTC().toISO() : undefined }}';
+
+export const listFromField: INodeProperties = {
+	displayName: 'From',
+	name: 'from',
+	type: 'dateTime',
+	default: '',
+	description:
+		'Return only posts whose scheduled or publish time is at or after this moment. A scheduled post that has since published is still found by the time it was scheduled for.',
+	routing: {
+		send: {
+			type: 'query',
+			property: 'from',
+			value: instantExpression,
+		},
+	},
+};
+
+export const listToField: INodeProperties = {
+	displayName: 'To',
+	name: 'to',
+	type: 'dateTime',
+	default: '',
+	description: 'Return only posts whose scheduled or publish time is before this moment',
+	routing: {
+		send: {
+			type: 'query',
+			property: 'to',
+			value: instantExpression,
+		},
+	},
+};
+
 export const draftField: INodeProperties = {
 	displayName: 'Draft',
 	name: 'draft',

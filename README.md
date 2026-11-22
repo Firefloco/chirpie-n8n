@@ -44,7 +44,7 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Media | Upload | Upload an image or video from the item's binary data, and get the ID a post can attach. **Options → Idempotency Key** makes a retried item safe |
 | Post | Create | Publish a post immediately, or schedule it with **Schedule At**, to one account or to several at once. **Options → First Comment** publishes a comment under the post as soon as it goes out, **Options → Instagram Placement** and **Options → Facebook Placement** publish it as a story or a reel instead of a feed post, **Options → Timezone** reads a **Schedule At** with no offset in an IANA zone such as `America/New_York`, and **Options → Idempotency Key** stops a retried item publishing twice |
 | Post | Get | Fetch a single post by ID |
-| Post | Get Many | List posts, filtered by status, account, or group, with pagination. Turn on **Include Hidden** for the ones you hid |
+| Post | Get Many | List posts, filtered by status, account, group, network (**Platform**), time (**From** and **To**, matching a post's scheduled or publish time) or words in the text (**Search Text**), ordered by **Sort By**, with pagination. Turn on **Include Hidden** for the ones you hid |
 | Post | Update | Edit a post that has not published yet, or finish a draft and schedule it |
 | Post | Publish | Send a saved draft now, checking it in full and charging it as a post |
 | Post | Retry First Comment | Post a first comment that failed, again. It re-sends the text the post already carries |
@@ -60,6 +60,8 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 **Schedule At** accepts any n8n datetime. A value carrying an offset, which is what the date picker and `$now` both produce, is converted to UTC before sending. A value with no offset is sent exactly as written and read by Chirpie in **Options → Timezone**, or in the timezone saved on the account, with daylight saving worked out for the date you named. Set **Options → Idempotency Key** from something stable across a retry of the same item, such as the execution ID plus the item index, and a retried item replays the first answer for 24 hours rather than publishing again.
 
 To publish the same post to several accounts in one call, leave **Account ID** empty and fill **Account IDs** instead: a comma-separated list of up to 25 account IDs. The output item is then a `group_id` plus one `results` entry per account, in the order they were named, so an account the platform refused is reported there while the others stay published. Pass that `group_id` to **Post → Get Many**'s **Group ID** filter to read the whole group back.
+
+**Options → Allow Duplicate** (also on **Thread → Create**, **Post → Update** and **Post → Publish**) publishes even when the account already has a post with the same text within 24 hours. Without it such an item is refused with `409 duplicate_post`, which names the post already there, and nothing is sent.
 
 **Options → Draft** on **Post → Create** and **Thread → Create** saves the content without sending it: nothing reaches the platform and nothing counts against your monthly quota. Find what is waiting with **Post → Get Many** and a **Status** of `draft`, then send it with **Post → Publish**, or queue it with **Post → Update** and a **Schedule At**. Switch **Update Fields → Draft** on as well to change only the time a draft remembers. Everything a create checks is checked at that point, so a draft that would be refused stays a draft, untouched.
 
