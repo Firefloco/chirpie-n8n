@@ -331,7 +331,7 @@ export const mediaUrlsField: INodeProperties = {
 	default: '',
 	placeholder: 'https://example.com/one.png, https://example.com/two.png',
 	description:
-		'Comma-separated list of public image or video URLs to attach. Limits vary by platform.',
+		'Comma-separated list of public image or video URLs to attach. Limits vary by platform. A video goes on its own, one per post, on X, Bluesky, LinkedIn, Mastodon and Telegram.',
 	routing: {
 		send: {
 			type: 'body',

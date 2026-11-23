@@ -55,7 +55,7 @@ Connect your social accounts once at [chirpie.ai/dashboard/accounts](https://chi
 | Account | Get Many | List the social accounts connected to your Chirpie workspace |
 | Analytic | Get | Fetch engagement metrics for a published post. **Options → Refresh** asks the platform now instead of reading the stored snapshot, allowed once per post every 5 minutes |
 
-**Post → Create** takes an **Account ID** (from Account → Get Many), the **Text**, and optionally **Media IDs** (from Media → Upload), **Media URLs** (a comma-separated list of public image or video URLs) and **Schedule At**. Use Media IDs or Media URLs, not both.
+**Post → Create** takes an **Account ID** (from Account → Get Many), the **Text**, and optionally **Media IDs** (from Media → Upload), **Media URLs** (a comma-separated list of public image or video URLs) and **Schedule At**. Use Media IDs or Media URLs, not both. A video goes on its own, one per post, on X, Bluesky, LinkedIn, Mastodon and Telegram. A video the platform is still processing comes back with status `processing` and goes live on its own; do not send it again.
 
 **Schedule At** accepts any n8n datetime. A value carrying an offset, which is what the date picker and `$now` both produce, is converted to UTC before sending. A value with no offset is sent exactly as written and read by Chirpie in **Options → Timezone**, or in the timezone saved on the account, with daylight saving worked out for the date you named. Set **Options → Idempotency Key** from something stable across a retry of the same item, such as the execution ID plus the item index, and a retried item replays the first answer for 24 hours rather than publishing again.
 
