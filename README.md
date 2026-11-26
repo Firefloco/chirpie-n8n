@@ -2,6 +2,8 @@
 
 An [n8n](https://n8n.io) community node for [Chirpie](https://chirpie.ai?utm_source=npm&utm_medium=readme&utm_campaign=n8n): one node that posts to every account you have connected, with scheduling, threads, drafts, and analytics. X/Twitter, Bluesky, LinkedIn, Threads, Mastodon, Instagram, Facebook and Telegram connect today, and more are coming soon.
 
+> **Giving an n8n AI Agent the Chirpie tools?** You can also add an MCP Client Tool pointing at Chirpie's hosted MCP server, `https://chirpie.ai/mcp` (HTTP Streamable, MCP OAuth2 or a bearer API key). See https://chirpie.ai/docs/n8n?utm_source=npm&utm_medium=readme&utm_campaign=n8n.
+
 The node is available to n8n AI Agents as a tool, so an agent can list your connected accounts and publish on its own.
 
 [Installation](#installation) · [Credentials](#credentials) · [Operations](#operations) · [Example workflow](#example-workflow) · [Resources](#resources)
